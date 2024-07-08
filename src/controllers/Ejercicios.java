@@ -1,8 +1,21 @@
 package controllers;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
 
 public class Ejercicios {
+    public Ejercicios() {
+        Boolean anagram = areAnagrams("teler", "leter");
+        System.out.println("Son anagramas :" + anagram);
+        int[] entradas = new int[4];
+        int[] numeros = sumatoriaDeDos(entradas, 5);
+        if (numeros == null) {
+            System.out.println("Sin convinaciones posibles");
+        } else {
+            System.out.println("Numero 1: " + numeros[0]);
+            System.out.println("Numero 2: " + numeros[1]);
+        }
+    }
 
     /**
      * Determina si dos cadenas de caracteres son anagramas.
@@ -28,8 +41,27 @@ public class Ejercicios {
      * frecuencia.
      */
     public static boolean areAnagrams(String str1, String str2) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        if (str1.length() != str2.length()) {
+            return false;
+        }
+        HashMap<Character, Integer> palabra = new HashMap<>();
+        for (Character character : str1.toCharArray()) {
+            palabra.put(character, palabra.containsKey(character) ? palabra.get(character) + 1 : 1);
+        }
+        for (Character character : str2.toCharArray()) {
+            try {
+                palabra.replace(character, palabra.get(character) - 1);
+            } catch (Exception e) {
+                return false;
+            }
+        }
 
+        for (Character lettCharacter : palabra.keySet()) {
+            if (palabra.get(lettCharacter) < 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /*
@@ -48,6 +80,14 @@ public class Ejercicios {
      * Output: null
      */
     public int[] sumatoriaDeDos(int[] nums, int objetivo) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int complemento = objetivo - nums[i];
+            if (map.containsKey(complemento)) {
+                return new int[] { map.get(complemento), i };
+            }
+            map.put(nums[i], i);
+        }
+        return null;
     }
 }
